@@ -1,0 +1,6 @@
+workspace('php-south-wales-speaker-leaderboard-go'):
+  description: A Go implementation of the PHP South Wales speaker leaderboard.
+
+command('go run %'): |
+  #!bash|=
+  passthru docker-compose run --rm console run ={ input.argument('%') }
