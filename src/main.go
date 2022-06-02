@@ -13,8 +13,8 @@ func main() {
 	}
 
 	params := url.Values{}
-	params.Add("fields[node--talk", "title,field_speakers")
 	params.Add("fields[node--person", "title")
+	params.Add("fields[node--talk", "title,field_speakers")
 	params.Add("include", "field_speakers")
 	base.RawQuery = params.Encode()
 
