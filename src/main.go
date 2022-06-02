@@ -1,9 +1,10 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
 	"net/url"
+	"os"
+
+	"github.com/jedib0t/go-pretty/v6/table"
 )
 
 func main() {
@@ -18,10 +19,10 @@ func main() {
 	params.Add("include", "field_speakers")
 	base.RawQuery = params.Encode()
 
-	response, err := http.Get(base.String())
-	if err != nil {
-		fmt.Println("There was an error")
-	}
-
-	fmt.Println(response)
+	// TODO: populate with data from the API.
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t.AppendHeader(table.Row{"Speaker name", "Number of talks"})
+	t.AppendRow([]interface{}{"Oliver Davies", 5})
+	t.Render()
 }
