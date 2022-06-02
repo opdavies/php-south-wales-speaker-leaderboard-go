@@ -1,6 +1,10 @@
 package main
 
 import (
+	"fmt"
+	"io/ioutil"
+	"log"
+	"net/http"
 	"net/url"
 	"os"
 
@@ -18,6 +22,20 @@ func main() {
 	params.Add("fields[node--talk", "title,field_speakers")
 	params.Add("include", "field_speakers")
 	base.RawQuery = params.Encode()
+
+	response, err := http.Get(base.String())
+	if err != nil {
+		fmt.Println("There was an error")
+	}
+
+	defer response.Body.Close()
+
+	responseBody, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(string(responseBody))
 
 	// TODO: populate with data from the API.
 	t := table.NewWriter()
