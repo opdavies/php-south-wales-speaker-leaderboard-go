@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# This file is based on https://github.com/adriancooney/Taskfile and this blog
+# post by Nick Janetakis (https://nickjanetakis.com/blog/replacing-make-with-a-shell-script-for-running-your-projects-tasks).
+#
+# Example usage: ./run go run .
+
+function go() {
+  # Run any `go` command within the `app` container.
+  docker-compose run --rm app go "${@}"
+}
+
+function help {
+  # Display the help text and available commands.
+  printf "%s <task> [args]\n\nTasks:\n" "${0}"
+
+  compgen -A function | grep -v "^_" | cat -n
+
+  printf "\nExtended help:\n  Each task has comments for general usage\n"
+}
+
+eval ${@:-help}

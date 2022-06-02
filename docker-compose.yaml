@@ -1,8 +1,6 @@
-version: '3'
-
 services:
-  console:
-    image: golang:1-alpine
+  app:
+    image: golang:1
     volumes:
       - ./src:/go/src
-    entrypoint: [go]
+    working_dir: /go/src
