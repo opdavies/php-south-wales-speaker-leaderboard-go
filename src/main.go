@@ -10,7 +10,7 @@ import (
 	"os"
 )
 
-func DisplayLeaderboard() {
+func displayLeaderboard() {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"Speaker name", "Number of talks"})
@@ -18,7 +18,7 @@ func DisplayLeaderboard() {
 	t.Render()
 }
 
-func GetApiData() (string, error) {
+func getApiData() (string, error) {
 	apiEndpointUrl, err := getApiEndpointUrl()
 
 	if err != nil {
@@ -60,7 +60,7 @@ func getApiEndpointUrl() (string, error) {
 }
 
 func main() {
-	apiData, err := GetApiData()
+	apiData, err := getApiData()
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -68,5 +68,5 @@ func main() {
 	fmt.Println(apiData)
 
 	// TODO: populate with data from the API.
-	DisplayLeaderboard()
+	displayLeaderboard()
 }
