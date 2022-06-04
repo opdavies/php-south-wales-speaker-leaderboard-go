@@ -11,10 +11,44 @@ import (
 	"github.com/jedib0t/go-pretty/v6/table"
 )
 
-func main() {
-	base, err := url.Parse("https://www.phpsouthwales.uk/jsonapi/node/talk")
+func DisplayLeaderboard() {
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t.AppendHeader(table.Row{"Speaker name", "Number of talks"})
+	t.AppendRow([]interface{}{"Oliver Davies", 5})
+	t.Render()
+}
+
+func GetApiData() (string, error) {
+	apiEndpointUrl, err := getApiEndpointUrl()
+
 	if err != nil {
-		return
+		return "", err
+	}
+
+	response, err := http.Get(apiEndpointUrl)
+
+	if err != nil {
+		fmt.Println("There was an error")
+		return "", err
+	}
+
+	defer response.Body.Close()
+
+	responseBody, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		log.Fatal(err)
+		return "", err
+	}
+
+	return string(responseBody), nil
+}
+
+func getApiEndpointUrl() (string, error) {
+	base, err := url.Parse("https://www.phpsouthwales.uk/jsonapi/node/talk")
+
+	if err != nil {
+		return "", err
 	}
 
 	params := url.Values{}
@@ -23,24 +57,17 @@ func main() {
 	params.Add("include", "field_speakers")
 	base.RawQuery = params.Encode()
 
-	response, err := http.Get(base.String())
+	return base.String(), nil
+}
+
+func main() {
+	apiData, err := GetApiData()
 	if err != nil {
-		fmt.Println("There was an error")
+		fmt.Println(err)
 	}
 
-	defer response.Body.Close()
-
-	responseBody, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println(string(responseBody))
+	fmt.Println(apiData)
 
 	// TODO: populate with data from the API.
-	t := table.NewWriter()
-	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"Speaker name", "Number of talks"})
-	t.AppendRow([]interface{}{"Oliver Davies", 5})
-	t.Render()
+	DisplayLeaderboard()
 }
