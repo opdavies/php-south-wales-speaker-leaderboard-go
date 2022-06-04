@@ -2,13 +2,12 @@ package main
 
 import (
 	"fmt"
+	"github.com/jedib0t/go-pretty/v6/table"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
 	"os"
-
-	"github.com/jedib0t/go-pretty/v6/table"
 )
 
 func DisplayLeaderboard() {
